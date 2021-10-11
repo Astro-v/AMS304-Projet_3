@@ -1,0 +1,23 @@
+function [Ar]=PACA(A)
+    global eps;
+    k=1;
+    R=A;
+    i=1;
+    U0 = [];
+    V0 = [];
+    while (frobenius(R)>=eps*frobenius(A))
+        [delta, j] = max(abs(R(i,:)));
+        if (delta==0)
+        else
+            uk = R(:,j); 
+            vk = R(i,:)./delta;
+            R = R-uk*vk;
+            k=k+1;
+        end
+    U0 = [U0 uk];
+    V0 = [V0;vk];
+    uk(i)=0
+    [~, i] = max(jk);
+    end
+    Ar = U0*V0-A;
+end 
