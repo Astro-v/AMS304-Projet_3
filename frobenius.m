@@ -1,3 +1,3 @@
 function [norme]=frobenius(M)
-    norme = sum(sum(M.*M));
+    norme = sqrt(sum(sum(M.*M)));
 end
