@@ -1,4 +1,4 @@
-function [Ar]=ACA(A)
+function [U0,V0]=ACA(A)
     global eps;
     k=0;
     R=A;
@@ -16,5 +16,4 @@ function [Ar]=ACA(A)
         U0 = [U0 uk];
         V0 = [V0;vk];
     end
-    Ar = U0*V0-A;
 end 
