@@ -12,8 +12,8 @@ function [block]=admi(L1,L2)
             end
         end
         [block.U0,block.V0] = ACA(A);
-        patch([block.I1.index(1) block.I1.index(end) block.I1.index(end) block.I1.index(1)],-[block.I2.index(1) block.I2.index(1) block.I2.index(end) block.I2.index(end)],"green");
-        text((block.I1.index(1)+block.I1.index(end))/2,-(block.I2.index(1)+block.I2.index(end))/2,int2str(rank(block.U0*block.V0)));
+        % patch([block.I1.index(1) block.I1.index(end) block.I1.index(end) block.I1.index(1)],-[block.I2.index(1) block.I2.index(1) block.I2.index(end) block.I2.index(end)],"green");
+        % text((block.I1.index(1)+block.I1.index(end))/2,-(block.I2.index(1)+block.I2.index(end))/2,int2str(rank(block.U0*block.V0)));
     elseif (length(L1)>1)
         block.adm = false;
         block.leaf = false;
@@ -34,6 +34,6 @@ function [block]=admi(L1,L2)
                 block.A(i,j) = matriceA(block.I1.index(i),block.I2.index(j));
             end
         end
-        patch([block.I1.index(1) block.I1.index(end) block.I1.index(end) block.I1.index(1)],-[block.I2.index(1) block.I2.index(1) block.I2.index(end) block.I2.index(end)],"red");
+        % patch([block.I1.index(1) block.I1.index(end) block.I1.index(end) block.I1.index(1)],-[block.I2.index(1) block.I2.index(1) block.I2.index(end) block.I2.index(end)],"red");
     end
 end
