@@ -1,19 +1,16 @@
 function [block]=admi(L1,L2)
     global eta;
+    global validation;
     block.I1 = L1((length(L1)+1)/2);
     block.I2 = L2((length(L2)+1)/2);
     if (min(block.I1.diam,block.I2.diam)<eta*dist(block.I1,block.I2))
         block.adm = true;
         block.leaf = true;
-        A = zeros(length(block.I1.index),length(block.I2.index));
-        for i = [1:length(block.I1.index)]
-            for j = [1:length(block.I2.index)]
-                A(i,j) = matriceA(block.I1.index(i),block.I2.index(j));
-            end
+        [block.U0,block.V0] = PACAB(block.I1.index,block.I2.index);
+        if (validation)
+        	patch([block.I1.index(1) block.I1.index(end) block.I1.index(end) block.I1.index(1)],-[block.I2.index(1) block.I2.index(1) block.I2.index(end) block.I2.index(end)],"green");
+        	text((block.I1.index(1)+block.I1.index(end))/2,-(block.I2.index(1)+block.I2.index(end))/2,int2str(rank(block.U0*block.V0)));
         end
-        [block.U0,block.V0] = ACA(A);
-        % patch([block.I1.index(1) block.I1.index(end) block.I1.index(end) block.I1.index(1)],-[block.I2.index(1) block.I2.index(1) block.I2.index(end) block.I2.index(end)],"green");
-        % text((block.I1.index(1)+block.I1.index(end))/2,-(block.I2.index(1)+block.I2.index(end))/2,int2str(rank(block.U0*block.V0)));
     elseif (length(L1)>1)
         block.adm = false;
         block.leaf = false;
@@ -34,6 +31,8 @@ function [block]=admi(L1,L2)
                 block.A(i,j) = matriceA(block.I1.index(i),block.I2.index(j));
             end
         end
-        % patch([block.I1.index(1) block.I1.index(end) block.I1.index(end) block.I1.index(1)],-[block.I2.index(1) block.I2.index(1) block.I2.index(end) block.I2.index(end)],"red");
+        if (validation)
+            patch([block.I1.index(1) block.I1.index(end) block.I1.index(end) block.I1.index(1)],-[block.I2.index(1) block.I2.index(1) block.I2.index(end) block.I2.index(end)],"red");
+        end
     end
 end

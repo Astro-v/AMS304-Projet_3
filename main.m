@@ -10,7 +10,7 @@ profile on;
 
 %% 0. Initialisation
 global k;k = 2*pi;
-global eps; eps=1e-5;
+global eps; eps=1e-6;
 global eta; eta=3;
 global R;R = 1;
 global dens;dens = 10;
@@ -18,6 +18,8 @@ global N; N = floor(dens*2*k*R+1)
 
 global cas; cas = "circle";
 global display; display = false;
+global validation; validation = false;
+global complexite; complexite = true;
 
 global s; [s,c] = mesh();
 
@@ -45,14 +47,15 @@ A = admi(L,L);
 b = B(s);
 
 %% trace de p
-
 p = gmres(@(U)produit(A,U),b,10,1e-06,N);
 
-figure()
-plot(real(-1i.*log((c(1,:)+1i.*c(2,:))./R)),real(p),real(-1i.*log((c(1,:)+1i.*c(2,:))./R)),imag(p))
-legend({'Partie réel de la trace de p','Partie réel de la trace de p'})
-xlabel('\theta')
-ylabel('Trace de p')
+if (validation)
+    figure()
+    plot(real(-1i.*log((c(1,:)+1i.*c(2,:))./R)),real(p),real(-1i.*log((c(1,:)+1i.*c(2,:))./R)),imag(p))
+    legend({'Partie réel de la trace de p','Partie réel de la trace de p'})
+    xlabel('\theta')
+    ylabel('Trace de p')
+end
 
 
 %% DISPLAY SOLUTION SQUARE
@@ -103,5 +106,27 @@ profile viewer
 
 %% TIME COMPLEXITY
 
+% time complexity for admi
 NBR = [26,51,101,202,403];
-T_MATA = [0.107,0.379,1.489,5.104,21.080];
+T_MATA = [0.199,0.487,1.312,3.174,7.487];
+T_MATA = T_MATA./log(NBR);
+P = polyfit(log(NBR),log(T_MATA),1);P(1)
+if (complexite)
+    figure()
+    loglog(NBR,T_MATA)
+    xlabel('Nombre de points (log N)')
+    ylabel('Temps d execution (log (T/log N))')
+end
+
+% time complexity for ACA
+
+NBR = [100,200,400,800]
+T_ACA = [0.029,0.153,0.967,8.828]./log(NBR);
+P = polyfit(log(NBR),log(T_ACA),1);P(1)
+if (complexite)
+    figure()
+    loglog(NBR,T_ACA)
+    xlabel('Nombre de points (log N)')
+    ylabel('Temps d execution (log T)')
+end
+
